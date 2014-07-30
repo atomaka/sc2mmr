@@ -1,0 +1,311 @@
+<?php
+$benchmark = array(
+	'total'			=> 0,
+	'index' 		=> 0,
+	'includes'		=> 0,
+	'twitter' 		=> 0,
+	'lastfm' 		=> 0,
+	'hulu' 			=> 0,
+	'sc2ranks'		=> 0,
+	'wow'			=> 0,
+	'steam'			=> 0,
+	'links'			=> 0,
+);
+$benchmark_start = microtime(true);
+
+include_once('lib/misc.php');
+
+$db_config = json_decode(file_get_contents('conf/database.conf'));
+include_once('lib/database.php');
+$db = new Database($db_config->hostname,$db_config->username,$db_config->password,$db_config->table);
+
+$benchmark['includes'] = microtime(true) - $benchmark_start;
+$benchmark_start = microtime(true);
+
+include_once('lib/twitter.php');
+$twt = new Twitter;
+$latest_tweet = $twt->get_latest_tweet('atomaka');
+$latest_tweet_since = time_since(strtotime($latest_tweet['created_at']));
+
+$benchmark['twitter'] = microtime(true) - $benchmark_start;
+$benchmark_start = microtime(true);
+
+include_once('lib/lastfm.php');
+$lfm = new Lastfm;
+$latest_song = $lfm->get_latest_song('atomaka');
+$latest_song_since = ($latest_song['@attributes']['nowplaying']) ? 'Listening now' : time_since(strtotime($latest_song['date'] . ' UTC')) . ' ago';
+$latest_song_image = (is_array($latest_song['image'][1])) ? 'img/lastfm/blank_album64.png' : $latest_song['image'][1];
+
+$benchmark['lastfm'] = microtime(true) - $benchmark_start;
+$benchmark_start = microtime(true);
+
+include_once('lib/hulu.php');
+$hul = new Hulu;
+$latest_hulu = $hul->get_latest_show('atomaka');
+$latest_hulu_since = time_since(strtotime($latest_hulu['pubdate']));
+preg_match('/<img src="(.*)" border="0"/',$latest_hulu['description'],$latest_hulu_thumb);
+$latest_hulu_thumb = $latest_hulu_thumb[1];
+
+$benchmark['hulu'] = microtime(true) - $benchmark_start;
+$benchmark_start = microtime(true);
+
+include_once('lib/sc2ranks.php');
+$sc2 = new Sc2ranks;
+$team = $sc2->get_team('Gaffer',888,1);
+
+$benchmark['sc2ranks'] = microtime(true) - $benchmark_start;
+$benchmark_start = microtime(true);
+
+//$latest_achievement = $wow->get_latest_achievement('gaffer','crushridge');
+
+$benchmark['wow'] = microtime(true) - $benchmark_start;
+$benchmark_start = microtime(true);
+
+include_once('lib/steamclass.php');
+$stm = new Steam('76561197993725971');
+$steam = $stm->profile();
+$steam_games = $stm->recentgames();
+
+$benchmark['steam'] = microtime(true) - $benchmark_start;
+$benchmark_start = microtime(true);
+
+include_once('lib/links.php');
+$lnk = new Links($db);
+$links = $lnk->get_latest_links(15);
+
+$benchmark['links'] = microtime(true) - $benchmark_start;
+$benchmark_start = microtime(true);
+
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"> 
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+		<title>Who is Andrew?</title>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<link rel="stylesheet" type="text/css" href="css/niftyCorners.css" />
+                <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script> 
+		<script type="text/javascript" src="js/jquery.qtip-1.0.0-rc3.min.js"></script>
+                <script type="text/javascript" src="js/niftycube.js"></script>
+		<script type="text/javascript" src="js/niftylayout.js"></script>
+                <link rel="shortcut icon" href="favicon.ico" />
+                <script type="text/javascript">	
+$(document).ready(function()
+{
+    //not doing what I want yet.  need to limit to images in contacts div.  $('#contacts img').each(function() { });
+    $('img[title]').qtip({ 
+        style: {  
+            tip: true,
+            border: {
+                width: 0,
+                radius: 5,
+                color: '#74aa81'
+            },
+            color: '#216332'
+        } 
+    })
+});
+
+
+                </script>
+	</head>	
+	<body>
+		<!--<div id="header"><h1>who is andrew?</h1></div>-->
+                <br/><br/>
+	
+		<div id="content">
+			<div id="column1a">
+				<!--<h2>about</h2>
+				<div id="about" class="box justify">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent mollis sodales lacus eu interdum. Phasellus a mi sit amet leo feugiat gravida eu quis arcu. Aliquam mauris libero, blandit egestas adipiscing sagittis, luctus in nisi. Morbi nec metus vel dui sagittis scelerisque sed vitae magna. Sed et lobortis felis. Nunc.
+				</div>
+				<br/>-->
+				<h2>contact</h2>
+				<div id="contacts" class="box center">
+                                    <img src="img/badges/email.png" border="0" alt="Email" title="atomaka@gmail.com" />
+                                    <img src="img/badges/aim.png" border="0" alt="AIM" title="atomaka" />
+                                    <img src="img/badges/yahoo.png" border="0" alt="Yahoo!" title="atomaka" />
+                                    <img src="img/badges/msn.png" border="0" alt="MSN" title="atomaka@hotmail.com" />
+                                    <img src="img/badges/icq.png" border="0" alt="ICQ" title="12534325" />
+                                    <img src="img/badges/google.png" border="0" alt="Google Messaging" title="atomaka@gmail.com" />
+                                    <img src="img/badges/skype.png" border="0" alt="Skype" title="andrewtomaka" />
+                                    <div id="contact"></div>  
+				</div>
+				<br/>
+				<h2>twitter</h2>
+				<div id="twitter" class="box">
+					<span class="right"><a href="http://www.twitter.com/atomaka"><img src="img/badges/twitter.png" border="0" alt="Follow me on Twitter"/></a></span>
+					<span class="tweet"><?php echo $latest_tweet['text'] ?></span><br/>
+					<?php echo $latest_tweet_since ?> ago
+				</div>
+				<br/>
+				<h2>projects</h2>
+				<h3>project 1</h3>
+					<div id="projects">
+					<div id ="sc2mmr" class="box">
+                                            <table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td valign="top" width="68">
+								<img src="img/projects/sc2mmr.jpg" width="64" alt="sc2mmr" />
+							</td>
+							<td valign="top">
+								<a href="projects/sc2mmr">sc2mmr</a><br/><br/>
+								Predicts how many more games you will need to play to receive a league 
+                                                                promotion in Starcraft 2.
+							</td>
+						</tr>
+                                            </table>
+					</div>
+					<h3>project 2</h3>
+					<p class="box">
+						content
+					</p>
+					<h3>project 3</h3>
+					<p class="box">
+						content
+					</p>
+				</div>
+			</div>
+			<div id="column1b">
+				<h2>random</h2>
+				<div id="random">
+<?php
+	foreach($links as $link)
+	{
+		$link_text = $link->text;
+		
+		$link_text = preg_replace('/\[/','<a href="' . htmlentities($link->url) . '">',$link_text);
+		$link_text = preg_replace('/\]/','</a>',$link_text);
+		
+		echo '					<p class="box">' . $link_text . '</p>' . "\n";
+	}
+?>				
+				</div>
+			</div>
+			<div id="column1c">
+				<h2>media</h2>
+				<div id="lastfm" class="box">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td valign="top" width="68">
+								<img src="<?php echo $latest_song_image; ?>" width="64" alt="<?php echo $latest_song['artist'] ?> - <?php echo $latest_song['name'] ?>"/>
+							</td>
+							<td valign="top">
+								<span class="right"><a href="http://last.fm/user/atomaka"><img src="img/badges/lastfm.png" border="0" alt="Last.fm" /></a></span>
+								<a href="<?php echo $latest_song['link'] ?>"><?php echo $latest_song['name'] ?></a><br/>
+								by <?php echo $latest_song['artist'] ?><br/><br/>
+								<?php echo $latest_song_since ?><br/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="hulu" class="box">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td valign="top" width="68">
+								<img src="<?php echo $latest_hulu_thumb ?>" width="64" alt="<?php echo $latest_hulu['hulu']['show-name'] ?> - <?php echo $latest_hulu['hulu']['video-title'] ?>" />
+							</td>
+							<td valign="top">
+								<span class="right"><a href="http://www.hulu.com/profiles/atomaka"><img src="img/badges/hulu.png" border="0" alt="Hulu" /></a></span>
+								<a href="<?php echo $latest_hulu['link'] ?>"><?php echo $latest_hulu['hulu']['video-title'] ?></a><br/>
+								from <?php echo $latest_hulu['hulu']['show-name'] ?><br/><br/>
+								<?php echo $latest_hulu_since ?> ago<br/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br/>
+				<h2>games</h2>
+				<h3>World of Warcraft</h3>
+				<div id="wow" class="box">
+					<table width="100%">
+						<tr>
+							<td valign="top" width="58"><a href="http://battle.net/wow"><img src="img/badges/wow.jpg" width="48" alt="World of Warcraft" /></a></td>
+							<td valign="top">
+								<a href="http://us.battle.net/wow/en/character/crushridge/gaffer/simple">Gaffer @ Crushridge</a><br/>
+                                                                <a href="http://us.battle.net/wow/en/character/crushridge/veincane/simple">Veincane @ Crushridge</a><br/>
+                                                                <a href="http://us.battle.net/wow/en/character/crushridge/ttg/simple">Ttg @ Crushridge</a><br/>
+								Guild: <a href="http://www.nca-guild.com">No Chicks Allowed</a><br/>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<h3>Starcraft 2</h3>
+				<div id="sc2" class="box">
+					<table width="100%">
+						<tr>
+							<td valign="top" width="58"><a href="http://battle.net/sc2"><img src="img/badges/sc2.jpg" alt="Starcraft 2" /></a></td>
+							<td  valign="top">
+								<a href="http://us.battle.net/sc2/en/profile/1680730/1/Gaffer/">Gaffer.888</a><br/>
+<?php
+if(!isset($team['error']))
+{
+	$league_image = $team['league'];
+?>
+								<?php echo $team['division'] ?><br/>
+								<?php echo $team['points'] ?> points, Rank <?php echo $team['division_rank'] ?><br/>
+								<?php echo $team['wins'] ?> wins <!---<?php echo $team['losses'] ?> (<?php echo $team['ratio'] * 100; ?>%)--><br/>
+<?php
+}
+else 
+{
+	$league_image = 'error';
+	echo 'Information not currently available.';
+}
+?>
+								</td>
+							<td class="right" valign="top"><img src="img/sc2/<?php echo $league_image ?>.png" alt="<?php echo ucfirst($team['league']) ?> League" /></td>
+						</tr>
+					</table>
+				</div>
+				<h3>Steam</h3>
+				<div id="steam" class="box">
+					<table width="100%">
+						<tr>
+							<td valign="top" width="58"><a href="http://steamcommunity.com/"><img src="img/badges/steam.jpg" width= "48" alt="Steam" /></a></td>
+							<td  valign="top">
+								<a href="http://steamcommunity.com/id/toppazz">Toppazz</a><br/>
+								<?php echo $steam['hoursPlayed2Wk']; ?> hours in the last two weeks.<br/>
+<?php
+	foreach($steam_games as $game)
+	{
+?>
+								<a href="<?php echo $game['gameLink']; ?>"><?php echo $game['gameName']; ?></a>: <?php echo $game['hoursPlayed']; ?> hours.<br/>
+<?
+	}
+?>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="clear">&nbsp;</div>
+		</div>
+		<br/>
+
+<?php
+$benchmark['index'] = microtime(true) - $benchmark_start;
+
+$max = array('part' => 'none','time' => 0);
+foreach($benchmark as $part=>$time) 
+{
+    if($time > $max['time'])
+    {
+       $max['time'] = $time;
+       $max['part'] = $part;
+    }
+    $benchmark['total'] += $time;
+}
+?>
+                <div id="benchmark">Prepared in <?php printf('%.1f',$benchmark['total']); ?>s. Damn you, <?php echo $max['part'] ?> (<?php printf('%.1f',$max['time']); ?>s)</div>
+		<div id="copyright">&copy; Andrew Tomaka 2010-2011. [ <a href="admin">admin</a> ]</div>
+		<br/><br/>
+	</body>
+</html>
+
+<?php
+echo '<!--';
+print_r($benchmark);
+echo '-->';
+?>

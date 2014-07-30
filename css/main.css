@@ -1,0 +1,266 @@
+body
+{
+	padding: 0px;
+	margin: 0px;
+	text-align: center;
+	background-color: #2A4480;/*#74aa81;*/
+	color: #000000;
+}
+
+body, div, td
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+img
+{
+	border: 0;
+}
+
+a
+{
+	color: #000000;
+}
+
+h1
+{
+	font-size: 48px;
+	font-weight: bold;
+}
+
+h2 
+{
+	font-size: 21px; 
+	font-weight: bold;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+	margin-bottom: 8px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #06266F; /*#9bc1a4;*/
+}
+h3
+{
+	visibility: hidden;
+	display: none;
+}
+
+table
+{
+	font-size: 11px; 
+	color: #000000;
+}
+
+div#header
+{
+	width: 979px;
+	text-align: right;
+	color: #6C8CD5;
+	margin: 0px auto;
+}
+
+div#content
+{
+	background-color: #6C8CD5; /*#216332;*/
+	text-align: left;
+	width: 979px;
+	margin: 0px auto;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+div#column1a
+{
+	width: 313px;
+	float: left;
+	padding-left: 10px;
+}
+
+div#column1b
+{
+	width: 636px;
+	float: left;
+	padding-left: 10px;
+}
+
+div#contact
+{
+	font-size: 24px;
+}
+
+div#contactme
+{
+    position:relative;
+}
+
+div#benchmark
+{
+	font-size: 11px;
+        color: #6C8CD5;
+}
+
+div#copyright
+{
+	font-size: 11px;
+        color: #6C8CD5;
+}
+
+.box
+{	
+	padding: 5px;
+	margin: 5px;
+	background-color: #ffffff;
+	font-size: 11px; 
+	color: #000000;
+}
+
+.box a
+{
+	color: #6C8CD5;
+}
+
+.box a:hover
+{
+	color: #06266F;
+}
+
+.tweet
+{
+	font-size: 16px;
+}
+
+.right
+{
+	float: right;
+	text-align:right;
+}
+
+.center
+{
+	text-align: center;
+}
+
+.justify
+{
+	text-align: justify;
+}
+
+.clear
+{
+	clear: both;
+}
+
+input.text {       
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-color: #F0F0F0;    
+    color: #06266F;    
+    border: 2px solid #2A4480;    
+    height:2em;
+    line-height:2em;
+    font-size:18px;
+    width: 90%;
+    text-align: center;
+}  
+
+input.optionaltext {       
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-color: #F0F0F0;    
+    color: #06266F;    
+    border: 2px solid #2A4480;    
+    height:2em;
+    line-height:2em;
+    font-size:18px;
+    width: 10%;
+    text-align: center;
+}  
+
+input.button {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-color: #F0F0F0;    
+    color: #06266F;    
+    border: 2px solid #2A4480;    
+    height:2em;
+    line-height:2em;
+    font-size:18px;
+}
+
+input.contacttext {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-color: #F0F0F0;    
+    color: #06266F;    
+    border: 2px solid #2A4480;    
+    height:1em;
+    line-height:1em;
+    font-size:14px;
+    width: 90%;
+}
+
+textarea.contactcomment {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-color: #F0F0F0;    
+    color: #06266F;    
+    border: 2px solid #2A4480;    
+    height:5em;
+    line-height:1em;
+    font-size:14px;
+    width: 90%;
+}
+
+input.contactbutton {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-color: #F0F0F0;    
+    color: #06266F;    
+    border: 2px solid #2A4480;    
+    height:1.5em;
+    line-height:1em;
+    font-size:14px;
+}
+
+.error {  
+    margin-left:10px;
+    display: none; /* hide the errors */  
+    /* add some styling */  
+    padding:5px;  
+    color: #D8000C;  
+    font-size:12px;  
+    background-color: #FFBABA;  
+    width:90%;
+    /*position:absolute;*/
+}  
+.success {  
+    margin-left:10px;
+    display: none; /* hide the sucess div */  
+    /* add some styling */  
+    padding:5px;  
+    color: #044406;  
+    font-size:12px;  
+    background-color: #B7FBB9;  
+    width:90%;
+    /*position:absolute;*/
+} 
+table.mmr {
+    border: 0;
+    width: 100%;
+}
+td.mmrHeading {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+td.mmrData {
+    text-align: center;
+    font-weight: bold;
+    font-size: 42px;
+}
+table.formula,td.formulaData {
+    border-color: #2A4489;
+    border-style: solid;
+}
+table.formula {
+    width:100%;
+    border-spacing: 0;
+    border-width: 0 0 2px 2px; 
+}
+td.formulaData {
+    border-width: 2px 2px 0 0; 
+}

@@ -1,0 +1,54 @@
+        $rowTemplate = <<<ROWTEMPLATE
+						<tr>
+
+							<td class="align-center" style="width: 15px" onmouseover="Tooltip.show\(this, 'Joined Division: (.*)'\);">
+
+									<img src="/sc2/static/images/icons/ladder/arrow-up.gif" alt="" />
+
+							</td>
+
+							<td class="align-center" style="width: 40px">(.*)</td>
+
+
+
+								<td>
+
+
+
+	<a href="/sc2/en/profile/1457748/1/(.*)/"
+
+	   class="race-zerg"
+
+	   onmouseover="Tooltip.show\(this, '#player-info-1457748'\);">
+
+										SpacePenguin
+
+	</a>
+
+
+
+									<div id="player-info-1457748" style="display: none">
+
+										<div class="tooltip-title">SpacePenguin</div>
+
+										<strong>Highest Rank:</strong> 1<br />
+
+										<strong>Previous Rank:</strong> 3<br />
+
+										<strong>Favorite Race:</strong> Zerg
+
+									</div>
+
+								</td>
+
+							<td class="align-center">(.*)</td>
+
+							<td class="align-center">(.*)</td>
+
+							<td class="align-center">(.*)</td>
+
+						</tr>
+ROWTEMPLATE;
+        $rowPattern = '{' . trim($rowTemplate) . '}m';
+        
+        preg_match_all($rowPattern,$divisionHtml,$divisionMatches);
